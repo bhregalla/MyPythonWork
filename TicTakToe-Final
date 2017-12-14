@@ -1,0 +1,153 @@
+#!/usr/bin/python
+
+import os
+os.system("clear")
+
+cf (self.cell[j] == self.cell[j-1] == self.cell[j-2] == " ") or (self.cell[j-2]
+== " ") or (self.cell[j-1] != self.cell[j]) or (self.cell[j-2] !=
+self.cell[j-1]) or (self.cell[j-1] != self.cell[j]) or (self.cell[j-2] !=
+self.cell[j]) or (self.cell[j-2] == self.cell[j-1] == " ")lass Board():
+	def __init__(self):
+		self.cells = [" "," "," "," "," "," "," "," "," "," "]
+
+	def display(self):
+		print (" %s | %s | %s " %(self.cells[1], self.cells[2],self.cells[3]))
+		print ("-----------")
+		print (" %s | %s | %s " %(self.cells[4], self.cells[5],self.cells[6]))
+		print ("-----------")
+		print (" %s | %s | %s " %(self.cells[7], self.cells[8],self.cells[9]))
+
+	def update_cell(self, cell_no, player):
+		if self.cells[cell_no] == " ":
+		    self.cells[cell_no] = player
+
+	def is_winner(self, player):
+		for combo in [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]:		
+			result = True
+			for cell_no in combo:
+				if self.cells[cell_no] != player:
+			    	    result = False
+			if result == True:
+		    	    return True
+		
+		return False		
+
+
+	def is_tie(self):
+		used_cells = 0
+		for cell in self.cells:
+		    if cell != " ":
+		      used_cells += 1
+		if used_cells == 9:
+		    return True
+		else:
+		    return False
+
+
+	def reset(self):
+		self.cells = [" "," "," "," "," "," "," "," "," "," "]
+
+	def ai_move(self, player):
+		if player == "X":
+		    enemy = "O"
+
+		if player == "O":
+		    enemy = "X"
+		#if the center is open, choose that
+		if self.cells[5] == " ":
+			self.update_cell(5, player)	
+		
+		#AI can Win
+
+		#AI Blocks
+		
+		#Choose Random
+		for i in range(1,10):
+			if self.cells[i] == " ":
+				self.update_cell(i, player)
+				break	
+
+
+
+gameboard = Board()
+
+def print_Header():
+	print ("Welcome to Tic-Tak-Toe\n")
+
+def refresh_screen():
+	#Clear the screen
+	os.system("clear")
+
+	#Print the header
+	print_Header()
+	
+	#Show the board
+	gameboard.display()
+
+#refresh_screen()
+
+while True:
+	refresh_screen()
+	
+	#Get X input
+	x_choice = int(raw_input("\nX) Please choose 1 - 9. >  "))
+	
+	#Update board
+	gameboard.update_cell(x_choice, "X")
+
+	#Refresh Screen
+	refresh_screen()
+
+	#Check for an X win
+	if gameboard.is_winner("X"):
+		print ("\nX wins!\n")
+		play_again = raw_input("Would you like to play again? (Y/N) > ").upper()
+		if play_again == "Y":
+		  gameboard.reset()
+		  continue
+		else:
+		  break
+
+	#Check for a tie
+        if gameboard.is_tie():
+                print ("\nTie game!\n")
+                play_again = raw_input("Would you like to play again? (Y/N) > ").upper()
+                if play_again == "Y":
+                  gameboard.reset()
+                  continue
+                else:
+                  break
+
+
+	#Get O input
+        #o_choice = int(raw_input("\nO) Please choose 1 - 9. >  "))
+	
+	gameboard.ai_move("O")
+
+        #Update board
+        #gameboard.update_cell(o_choice, "O")
+
+	#Refresh Screen
+        refresh_screen()
+
+	#Check for an O win
+        if gameboard.is_winner("O"):
+                print ("\nO wins!\n")
+                play_again = raw_input("Would you like to play again? (Y/N) > ").upper()
+                if play_again == "Y":
+                  gameboard.reset()
+                  continue
+                else:
+                  break
+
+
+	#Check for a tie
+        if gameboard.is_tie():
+                print ("\nTie game!\n")
+                play_again = raw_input("Would you like to play again? (Y/N) > ").upper()
+                if play_again == "Y":
+                  gameboard.reset()
+                  continue
+                else:
+                  break
+
